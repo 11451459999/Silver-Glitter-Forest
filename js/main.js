@@ -1139,7 +1139,7 @@
                 const inputs = loginForm.querySelectorAll('.form-input');
 
                 try {
-                    const response = await fetch('http://localhost:8080/login', {
+                    const response = await fetch('https://persnickety-defunctive-ceola.ngrok-free.dev/login', {
                         method: 'POST',
                         body: formData,
                         credentials: 'include'
@@ -1185,7 +1185,7 @@
                 }
 
                 try {
-                    const response = await fetch('http://localhost:8080/register', {
+                    const response = await fetch('https://persnickety-defunctive-ceola.ngrok-free.dev/register', {
                         method: 'POST',
                         body: formData,
                         credentials: 'include'
@@ -1264,7 +1264,7 @@
     // 退出登录
     async function logout() {
         try {
-            await fetch('http://localhost:8080/logout', {
+            await fetch('https://persnickety-defunctive-ceola.ngrok-free.dev/logout', {
                 method: 'POST',
                 credentials: 'include'
             });
@@ -1316,7 +1316,7 @@
     // ============================================
     // 评论区交互 - 完整功能
     // ============================================
-    const API_BASE_URL = 'http://localhost:8080';
+    const API_BASE_URL = 'https://persnickety-defunctive-ceola.ngrok-free.dev';
     let currentUser = null; // 当前登录用户信息
 
     function initComments() {
