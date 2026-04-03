@@ -1432,17 +1432,23 @@
     // 加载评论列表
     async function loadComments(sortType = 'newest') {
         const commentsList = document.querySelector('.comments-list');
-        if (!commentsList) return;
+        if (!commentsList) {
+            console.log('[DEBUG] comments-list 元素不存在');
+            return;
+        }
 
         try {
+            console.log('[DEBUG] 正在加载评论...');
             const response = await fetch(`${API_BASE_URL}/comments`, {
                 method: 'GET',
                 credentials: 'include'
             });
             const result = await response.json();
+            console.log('[DEBUG] 评论数据:', result);
 
             if (result.suc && result.comments) {
                 let comments = result.comments;
+                console.log('[DEBUG] 评论数量:', comments.length);
 
                 // 排序处理
                 if (sortType === 'newest') {
@@ -1459,7 +1465,12 @@
     // 渲染评论列表
     function renderComments(comments) {
         const commentsList = document.querySelector('.comments-list');
-        if (!commentsList) return;
+        if (!commentsList) {
+            console.log('[DEBUG] renderComments: comments-list 元素不存在');
+            return;
+        }
+
+        console.log('[DEBUG] renderComments: 渲染', comments.length, '条评论');
 
         if (comments.length === 0) {
             commentsList.innerHTML = `
@@ -1470,7 +1481,7 @@
             return;
         }
 
-        commentsList.innerHTML = comments.map(comment => {
+        const html = comments.map(comment => {
             const timeAgo = formatTimeAgo(comment.cat);
             const isOwner = currentUser && currentUser.username === comment.cname;
 
@@ -1506,6 +1517,9 @@
                 </div>
             `;
         }).join('');
+
+        commentsList.innerHTML = html;
+        console.log('[DEBUG] renderComments: HTML 已更新');
 
         // 绑定点赞事件
         const likeBtns = commentsList.querySelectorAll('.like-btn');
