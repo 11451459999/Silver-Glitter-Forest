@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>不存在的逐梦者：银葱之森 | The NOexistence of Morphean Paradox</title>
+    <meta name="keywords" content="银葱之森,不存在的逐梦者,Steam,独立游戏,RPG,冒险游戏">
+    <meta name="description" content="在银葱之森，书写属于你的逐梦篇章。成为公会的领导者，与同伴一起规划冒险之旅。">
+    <link rel="icon" type="image/x-icon" href="../assets/favicon.ico">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="../css/style.css">
+    <script src="../js/lenis.min.js"></script>
+</head>
+
+<body>
+    <!-- SEO图片 -->
+    <div class="seo-img">
+        <img src="../assets/bg/forest_bg01.png" alt="不存在的逐梦者：银葱之森">
+    </div>
+
+    <!-- 加载画面 -->
+    <div class="loading" id="loading">
+        <div class="loading-logo">
+            <img src="../assets/bg/game_title.png" alt="銀葱之森" class="logo-img">
+        </div>
+        <div class="loading-progress">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+        </div>
+        <div class="percent" id="loadingPercent">0%</div>
+    </div>
+
+    <!-- 顶部导航栏 -->
+    <nav class="top-bar" id="topBar">
+        <div class="top-bar-left">
+            <a href="#" class="main-logo">
+                <img src="../assets/bg/game_title.png" alt="銀葱之森" class="logo-img">
+            </a>
+            <ul class="nav-menu">
+                <li><a href="#home" class="nav-item active" data-section="home">首页</a></li>
+                <li><a href="#characters" class="nav-item" data-segment="1">莉莉丝</a></li>
+                <li><a href="#characters" class="nav-item" data-segment="2">卡莲</a></li>
+                <li><a href="#characters" class="nav-item" data-segment="3">弗子</a></li>
+                <li><a href="#characters" class="nav-item" data-segment="4">夏特露</a></li>
+                <li><a href="#characters" class="nav-item" data-segment="5">格林</a></li>
+                <li><a href="#gallery" class="nav-item" data-section="gallery">画廊</a></li>
+                <li><a href="#features" class="nav-item" data-section="features">特色</a></li>
+            </ul>
+        </div>
+        <div class="top-bar-right">
+            <button class="login-btn" id="loginBtn">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                    <circle cx="12" cy="7" r="4" />
+                </svg>
+                登录
+            </button>
+            <a href="https://store.steampowered.com/app/3942480/_/" target="_blank" class="reserve-btn">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                    <path
+                        d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
+                </svg>
+                Steam商店
+            </a>
+            <button class="toggle-btn" id="menuToggle">
+                <span class="line"></span>
+                <span class="line"></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- 侧边导航 -->
+    <div class="side-nav" id="sideNav">
+        <div class="mask-bg" id="sideNavMask"></div>
+        <div class="side-nav-content">
+            <div class="side-nav-header">
+                <img src="../assets/bg/game_title.png" alt="銀葱之森" class="logo-img">
+                <button class="close-btn" id="sideNavClose">×</button>
+            </div>
+            <ul class="side-nav-menu">
+                <li><a href="#home" class="side-nav-item">首页</a></li>
+                <li><a href="#characters" class="side-nav-item" data-segment="1">莉莉丝</a></li>
+                <li><a href="#characters" class="side-nav-item" data-segment="2">卡莲</a></li>
+                <li><a href="#characters" class="side-nav-item" data-segment="3">弗子</a></li>
+                <li><a href="#characters" class="side-nav-item" data-segment="4">夏特露</a></li>
+                <li><a href="#characters" class="side-nav-item" data-segment="5">格林</a></li>
+                <li><a href="#gallery" class="side-nav-item">画廊</a></li>
+                <li><a href="#features" class="side-nav-item">特色</a></li>
+                <li><a href="https://store.steampowered.com/app/3942480/_/" target="_blank"
+                        class="side-nav-item highlight">Steam商店</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- 主内容 -->
+    <main class="main-content" id="mainContent">
+
+        <!-- Hero 首屏 -->
+        <section class="home-section" id="home">
+            <div class="kv-container">
+                <canvas id="homeCanvas"></canvas>
+                <div class="kv-overlay"></div>
+            </div>
+            <div class="home-content">
+                <div class="title-wrapper">
+                    <img src="../assets/bg/game_title.png" alt="不存在的逐梦者：銀葱之森" class="title-img">
+                </div>
+                <div class="home-actions">
+                    <button class="play-btn" id="playBtn">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M8 5v14l11-7z" />
+                        </svg>
+                        观看PV
+                    </button>
+                    <a href="https://store.steampowered.com/app/3942480/_/" target="_blank" class="steam-btn">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path
+                                d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
+                        </svg>
+                        Steam商店
+                    </a>
+                </div>
+            </div>
+            <div class="character-show">
+                <img src="../assets/characters/Character.png" alt="" class="character-img">
+            </div>
+            <div class="scroll-hint">
+                <span>SCROLL</span>
+                <div class="scroll-arrow"></div>
+            </div>
+        </section>
+
+        <!-- 角色介绍 - 逐帧动画区域 -->
+        <section class="characters-section" id="characters">
+            <!-- 逐帧动画Canvas背景 -->
+            <div class="frame-animation-container">
+                <canvas id="frameCanvas"></canvas>
+                <div class="frame-overlay"></div>
+            </div>
+
+            <!-- 当前角色信息显示 -->
+            <div class="current-character-info" id="currentCharacterInfo">
+                <div class="char-info-inner">
+                    <div class="char-name-display">
+                        <span class="name-en" id="charNameEn">LILITH</span>
+                        <span class="name-cn" id="charNameCn">莉莉丝</span>
+                    </div>
+                    <div class="char-dialog-display" id="charDialog">
+                        <p>「我叫莉莉丝，一名魔剑士——在商业之里，像你这样的好人可不多了。」</p>
+                    </div>
+                    <p class="char-desc-display" id="charDesc">
+                        银葱之森的神秘美少女，是一位略懂些魔法技艺的剑士，自称要打败魔王赢得众人的欢呼——不过目前的当务之急是抢购打折面包。</p>
+                </div>
+            </div>
+
+            <!-- 滚动空间 -->
+            <div class="frame-spacer"></div>
+        </section>
+
+        <!-- 过渡区域 -->
+        <section class="transition-section">
+        </section>
+
+        <!-- 游戏画廊 -->
+        <section class="gallery-section" id="gallery">
+            <div class="section-header">
+                <h2 class="section-title">游戏画廊</h2>
+                <p class="section-subtitle">GALLERY</p>
+            </div>
+            <div class="gallery-grid">
+                <div class="gallery-item">
+                    <img src="../assets/screenshots/screenshot_1.jpg" alt="游戏截图">
+                    <div class="gallery-overlay">
+                        <span class="gallery-label">公会界面</span>
+                    </div>
+                </div>
+                <div class="gallery-item">
+                    <img src="../assets/screenshots/screenshot_2.jpg" alt="游戏截图">
+                    <div class="gallery-overlay">
+                        <span class="gallery-label">特殊事件</span>
+                    </div>
+                </div>
+                <div class="gallery-item">
+                    <img src="../assets/screenshots/screenshot_3.jpg" alt="游戏截图">
+                    <div class="gallery-overlay">
+                        <span class="gallery-label">战斗场景</span>
+                    </div>
+                </div>
+                <div class="gallery-item">
+                    <img src="../assets/screenshots/screenshot_4.jpg" alt="游戏截图">
+                    <div class="gallery-overlay">
+                        <span class="gallery-label">探索世界</span>
+                    </div>
+                </div>
+                <div class="gallery-item">
+                    <img src="../assets/screenshots/screenshot_5.jpg" alt="游戏截图">
+                    <div class="gallery-overlay">
+                        <span class="gallery-label">日程管理</span>
+                    </div>
+                </div>
+                <div class="gallery-item">
+                    <img src="../assets/screenshots/screenshot_6.jpg" alt="游戏截图">
+                    <div class="gallery-overlay">
+                        <span class="gallery-label">角色互动</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 游戏特色 -->
+        <section class="features-section" id="features">
+            <div class="section-header">
+                <h2 class="section-title">游戏特色</h2>
+                <p class="section-subtitle">FEATURES</p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                            <circle cx="9" cy="7" r="4" />
+                            <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+                            <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+                        </svg>
+                    </div>
+                    <h3 class="feature-title">公会冒险</h3>
+                    <p class="feature-desc">成为公会的领导者，与同伴一起规划冒险之旅，在银葱之森写下你们的逐梦篇章。</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+                            <line x1="16" y1="2" x2="16" y2="6" />
+                            <line x1="8" y1="2" x2="8" y2="6" />
+                            <line x1="3" y1="10" x2="21" y2="10" />
+                        </svg>
+                    </div>
+                    <h3 class="feature-title">日程管理</h3>
+                    <p class="feature-desc">冒险者，今天我们要做些什么呢？训练、探索迷宫，还是接下神秘的委托？</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polygon
+                                points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                        </svg>
+                    </div>
+                    <h3 class="feature-title">决策导向</h3>
+                    <p class="feature-desc">50万+字文本，10+有意义结局。你的每一个选择都可能彻底改变世界走向。</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="18" y1="20" x2="18" y2="10" />
+                            <line x1="12" y1="20" x2="12" y2="4" />
+                            <line x1="6" y1="20" x2="6" y2="14" />
+                        </svg>
+                    </div>
+                    <h3 class="feature-title">个性化成长</h3>
+                    <p class="feature-desc">6个维度的数值，独一无二的技能模组。率领一支极具个人风格的精英冒险者小队。</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10" />
+                            <circle cx="12" cy="12" r="6" />
+                            <circle cx="12" cy="12" r="2" />
+                        </svg>
+                    </div>
+                    <h3 class="feature-title">策略战斗</h3>
+                    <p class="feature-desc">波灵、哥布林、暗杀藤……银葱之森危险重重，搭配技能与队伍，与数十种敌人战斗。</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA区域 -->
+        <section class="cta-section" id="cta">
+            <div class="cta-content">
+                <h2 class="cta-title">开始你的冒险</h2>
+                <p class="cta-desc">在银葱之森，书写属于你的逐梦篇章</p>
+                <a href="https://store.steampowered.com/app/3942480/_/" target="_blank" class="cta-btn">
+                    立即游玩
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M5 12h14M12 5l7 7-7 7" />
+                    </svg>
+                </a>
+            </div>
+        </section>
+
+        <!-- 评论区 -->
+        <section class="comments-section" id="comments">
+            <div class="section-header">
+                <h2 class="section-title">玩家评论</h2>
+                <p class="section-subtitle">COMMENTS</p>
+            </div>
+            <div class="comments-container">
+                <!-- 评论输入区 -->
+                <div class="comment-input-area">
+                    <div class="comment-avatar">
+                        <img src="../assets/favicon.ico" alt="用户头像" class="avatar-img">
+                    </div>
+                    <div class="comment-input-wrapper">
+                        <textarea class="comment-textarea" placeholder="分享你对银葱之森的看法..." rows="3"></textarea>
+                        <div class="comment-actions">
+                            <span class="char-count">0/500</span>
+                            <button class="submit-comment-btn" id="submitComment">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <line x1="22" y1="2" x2="11" y2="13" />
+                                    <polygon points="22 2 15 22 11 13 2 9 22 2" />
+                                </svg>
+                                发表评论
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 评论排序 -->
+                <div class="comments-sort">
+                    <span class="sort-label">排序方式：</span>
+                    <button class="sort-btn active" data-sort="newest">最新</button>
+                    <button class="sort-btn" data-sort="hottest">最热</button>
+                </div>
+
+                <!-- 评论列表 -->
+                <div class="comments-list">
+                    <!-- 评论项 -->
+                    <div class="comment-item">
+                        <div class="comment-avatar">
+                            <img src="../assets/favicon.ico" alt="用户头像" class="avatar-img">
+                        </div>
+                        <div class="comment-content">
+                            <div class="comment-header">
+                                <span class="comment-username">森林冒险者</span>
+                                <span class="comment-badge">资深玩家</span>
+                                <span class="comment-time">2小时前</span>
+                            </div>
+                            <p class="comment-text">这款游戏的剧情真的太棒了！莉莉丝的角色塑造非常成功，每一个选择都让人纠结。期待更多内容更新！</p>
+                            <div class="comment-footer">
+                                <button class="comment-action-btn like-btn">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path
+                                            d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3" />
+                                    </svg>
+                                    <span>128</span>
+                                </button>
+                                <button class="comment-action-btn reply-btn">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <polyline points="9 17 4 12 9 7" />
+                                        <path d="M20 18v-2a4 4 0 0 0-4-4H4" />
+                                    </svg>
+                                    <span>回复</span>
+                                </button>
+                            </div>
+
+                            <!-- 回复列表 -->
+                            <div class="replies-list">
+                                <div class="comment-item reply">
+                                    <div class="comment-avatar small">
+                                        <img src="../assets/favicon.ico" alt="用户头像" class="avatar-img">
+                                    </div>
+                                    <div class="comment-content">
+                                        <div class="comment-header">
+                                            <span class="comment-username">月光旅人</span>
+                                            <span class="comment-time">1小时前</span>
+                                        </div>
+                                        <p class="comment-text">同意！卡莲的故事线也很精彩，建议试试不同的选择分支。</p>
+                                        <div class="comment-footer">
+                                            <button class="comment-action-btn like-btn">
+                                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                    stroke-width="2">
+                                                    <path
+                                                        d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3" />
+                                                </svg>
+                                                <span>45</span>
+                                            </button>
+                                            <button class="comment-action-btn reply-btn">
+                                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                    stroke-width="2">
+                                                    <polyline points="9 17 4 12 9 7" />
+                                                    <path d="M20 18v-2a4 4 0 0 0-4-4H4" />
+                                                </svg>
+                                                <span>回复</span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 更多评论 -->
+                    <div class="comment-item">
+                        <div class="comment-avatar">
+                            <img src="../assets/favicon.ico" alt="用户头像" class="avatar-img">
+                        </div>
+                        <div class="comment-content">
+                            <div class="comment-header">
+                                <span class="comment-username">逐梦行者</span>
+                                <span class="comment-time">5小时前</span>
+                            </div>
+                            <p class="comment-text">战斗系统很有深度，需要仔细研究技能搭配。美术风格也很喜欢，森林的氛围营造得很好。</p>
+                            <div class="comment-footer">
+                                <button class="comment-action-btn like-btn liked">
+                                    <svg viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2">
+                                        <path
+                                            d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3" />
+                                    </svg>
+                                    <span>89</span>
+                                </button>
+                                <button class="comment-action-btn reply-btn">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <polyline points="9 17 4 12 9 7" />
+                                        <path d="M20 18v-2a4 4 0 0 0-4-4H4" />
+                                    </svg>
+                                    <span>回复</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="comment-item">
+                        <div class="comment-avatar">
+                            <img src="../assets/touxiang.png" alt="用户头像" class="avatar-img">
+                        </div>
+                        <div class="comment-content">
+                            <div class="comment-header">
+                                <span class="comment-username">迷雾探索者</span>
+                                <span class="comment-time">1天前</span>
+                            </div>
+                            <p class="comment-text">已经通关了三个结局，每个都让人意犹未尽。期待开发者能推出更多DLC内容！</p>
+                            <div class="comment-footer">
+                                <button class="comment-action-btn like-btn">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path
+                                            d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3" />
+                                    </svg>
+                                    <span>256</span>
+                                </button>
+                                <button class="comment-action-btn reply-btn">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <polyline points="9 17 4 12 9 7" />
+                                        <path d="M20 18v-2a4 4 0 0 0-4-4H4" />
+                                    </svg>
+                                    <span>回复</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 加载更多 -->
+                <button class="load-more-btn">
+                    加载更多评论
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="6 9 12 15 18 9" />
+                    </svg>
+                </button>
+            </div>
+        </section>
+
+        <!-- 底部导航 -->
+        <footer class="footer-nav">
+            <div class="footer-left">
+                <div class="footer-logo">
+                    <img src="../assets/bg/game_title.png" alt="銀葱之森" class="logo-img">
+                </div>
+            </div>
+            <div class="footer-right">
+                <div class="nav-links">
+                    <a href="https://store.steampowered.com/app/3942480/_/" target="_blank" class="nav-link">Steam商店</a>
+                    <a href="https://store.steampowered.com/app/3942480/_/" target="_blank" class="nav-link">官方网站</a>
+                </div>
+                <div class="game-icons">
+                    <span class="game-label">现已登陆</span>
+                    <a href="https://store.steampowered.com/app/3942480/_/" target="_blank" class="game-icon">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path
+                                d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
+                        </svg>
+                    </a>
+                </div>
+                <p class="copyright">© 2024 不存在的逐梦者：银葱之森. All rights reserved.</p>
+            </div>
+        </footer>
+    </main>
+
+    <!-- 视频弹窗 -->
+    <div class="video-modal" id="videoModal">
+        <div class="video-modal-content">
+            <button class="modal-close" id="modalClose">×</button>
+            <video id="trailerVideo" controls>
+                <source src="../videos/trailer.mp4" type="video/mp4">
+            </video>
+        </div>
+    </div>
+
+    <!-- 登录/注册弹窗 -->
+    <div class="auth-modal" id="authModal">
+        <div class="auth-modal-content">
+            <button class="modal-close auth-close" id="authClose">×</button>
+
+            <!-- 装饰背景 -->
+            <div class="auth-decoration">
+                <div class="auth-bg-pattern"></div>
+            </div>
+
+            <div class="auth-container">
+                <!-- 标签切换 -->
+                <div class="auth-tabs">
+                    <button class="auth-tab active" data-tab="login">登录</button>
+                    <button class="auth-tab" data-tab="register">注册</button>
+                    <div class="auth-tab-indicator"></div>
+                </div>
+
+                <!-- 登录表单 -->
+                <form class="auth-form login-form active" id="loginForm">
+                    <div class="form-group">
+                        <label class="form-label">用户名</label>
+                        <div class="input-wrapper">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                                <circle cx="12" cy="7" r="4" />
+                            </svg>
+                            <input type="text" name="username" class="form-input" placeholder="请输入用户名" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">密码</label>
+                        <div class="input-wrapper">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+                                <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                            </svg>
+                            <input type="password" name="password" class="form-input" placeholder="请输入密码" required>
+                            <button type="button" class="toggle-password">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                    class="eye-open">
+                                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                                    <circle cx="12" cy="12" r="3" />
+                                </svg>
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                    class="eye-closed" style="display:none">
+                                    <path
+                                        d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24" />
+                                    <line x1="1" y1="1" x2="23" y2="23" />
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                    <button type="submit" class="auth-submit-btn">
+                        登录
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M5 12h14M12 5l7 7-7 7" />
+                        </svg>
+                    </button>
+                </form>
+
+                <!-- 注册表单 -->
+                <form class="auth-form register-form" id="registerForm">
+                    <div class="form-group">
+                        <label class="form-label">用户名</label>
+                        <div class="input-wrapper">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                                <circle cx="12" cy="7" r="4" />
+                            </svg>
+                            <input type="text" name="username" class="form-input" placeholder="请输入用户名" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">邮箱地址</label>
+                        <div class="input-wrapper">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+                                <polyline points="22,6 12,13 2,6" />
+                            </svg>
+                            <input type="email" name="email" class="form-input" placeholder="请输入邮箱地址" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">密码</label>
+                        <div class="input-wrapper">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+                                <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                            </svg>
+                            <input type="password" name="password" class="form-input" placeholder="请设置密码（至少8位）"
+                                required>
+                            <button type="button" class="toggle-password">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                    class="eye-open">
+                                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                                    <circle cx="12" cy="12" r="3" />
+                                </svg>
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                    class="eye-closed" style="display:none">
+                                    <path
+                                        d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24" />
+                                    <line x1="1" y1="1" x2="23" y2="23" />
+                                </svg>
+                            </button>
+                        </div>
+                        <!-- 密码强度指示器 -->
+                        <div class="password-strength">
+                            <div class="strength-bar">
+                                <div class="strength-fill" data-strength="weak"></div>
+                            </div>
+                            <span class="strength-text">密码强度：弱</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">确认密码</label>
+                        <div class="input-wrapper">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+                                <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                            </svg>
+                            <input type="password" name="confirm_password" class="form-input" placeholder="请再次输入密码"
+                                required>
+                        </div>
+                    </div>
+                    <div class="form-options">
+                        <label class="checkbox-wrapper">
+                            <input type="checkbox" class="custom-checkbox" required>
+                            <span class="checkmark"></span>
+                            <span>我已阅读并同意 <a href="#">服务条款</a> 和 <a href="#">隐私政策</a></span>
+                        </label>
+                    </div>
+                    <button type="submit" class="auth-submit-btn">
+                        注册账号
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M5 12h14M12 5l7 7-7 7" />
+                        </svg>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/main.js"></script>
+</body>
+
+</html>
