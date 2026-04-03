@@ -27,6 +27,7 @@
     document.addEventListener('DOMContentLoaded', init);
 
     function init() {
+        console.log('[DEBUG] main.js 版本: 2026-04-03-v3');
         initLenis();
         initLoading();
         initNavigation();
