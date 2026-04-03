@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: silver-forest-api
+    env: python
+    buildCommand: pip install -r py/requirements.txt
+    startCommand: cd py && python app_render.py
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.12.0
+      - key: SECRET_KEY
+        generateValue: true
