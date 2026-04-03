@@ -1147,7 +1147,14 @@
                     const result = await response.json();
 
                     if (result.suc) {
-                        // 登录成功
+                        // 保存 token 到 localStorage
+                        console.log('登录返回结果:', result);
+                        if (result.token) {
+                            localStorage.setItem('auth_token', result.token);
+                            console.log('Token 已保存:', result.token);
+                        } else {
+                            console.log('警告: 登录成功但没有返回 token');
+                        }
                         showAuthMessage(result.mes, 'success');
                         closeModal();
                         updateLoginUI(result.username || formData.get('username'));
@@ -1235,6 +1242,7 @@
     function updateLoginUI(username) {
         // 存储当前用户信息（用于评论功能判断拥有者）
         currentUser = { username: username };
+        localStorage.setItem('username', username);
 
         const loginBtn = document.getElementById('loginBtn');
         if (loginBtn) {
@@ -1263,16 +1271,22 @@
 
     // 退出登录
     async function logout() {
+        const token = localStorage.getItem('auth_token');
         try {
             await fetch('https://persnickety-defunctive-ceola.ngrok-free.dev/logout', {
                 method: 'POST',
-                credentials: 'include'
+                credentials: 'include',
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
             });
         } catch (error) {
             console.error('退出登录失败:', error);
         }
 
-        // 清除当前用户信息
+        // 清除 token 和用户信息
+        localStorage.removeItem('auth_token');
+        localStorage.removeItem('username');
         currentUser = null;
 
         // 重置UI
@@ -1319,7 +1333,20 @@
     const API_BASE_URL = 'https://persnickety-defunctive-ceola.ngrok-free.dev';
     let currentUser = null; // 当前登录用户信息
 
+    // 页面加载时检查是否有保存的登录状态
+    function checkStoredLogin() {
+        const token = localStorage.getItem('auth_token');
+        const savedUsername = localStorage.getItem('username');
+        if (token && savedUsername) {
+            currentUser = { username: savedUsername };
+            updateLoginUI(savedUsername);
+        }
+    }
+
     function initComments() {
+        // 检查保存的登录状态
+        checkStoredLogin();
+
         const commentTextarea = document.querySelector('.comment-textarea');
         const charCount = document.querySelector('.char-count');
         const submitCommentBtn = document.getElementById('submitComment');
@@ -1359,12 +1386,20 @@
                     const formData = new FormData();
                     formData.append('content', content);
 
+                    const token = localStorage.getItem('auth_token');
+                    console.log('评论时的 token:', token);
+                    console.log('当前 localStorage:', localStorage);
+                    
                     const response = await fetch(`${API_BASE_URL}/comment`, {
                         method: 'POST',
                         body: formData,
-                        credentials: 'include'
+                        credentials: 'include',
+                        headers: {
+                            'Authorization': `Bearer ${token}`
+                        }
                     });
                     const result = await response.json();
+                    console.log('评论返回结果:', result);
 
                     if (result.suc) {
                         showCommentMessage(result.mes, 'success');
@@ -1496,9 +1531,13 @@
         if (!confirm('确定要删除这条评论吗？')) return;
 
         try {
+            const token = localStorage.getItem('auth_token');
             const response = await fetch(`${API_BASE_URL}/del_comment/${commentId}`, {
                 method: 'DELETE',
-                credentials: 'include'
+                credentials: 'include',
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
             });
             const result = await response.json();
 
