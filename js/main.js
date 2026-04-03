@@ -1140,7 +1140,7 @@
                 const inputs = loginForm.querySelectorAll('.form-input');
 
                 try {
-                    const response = await fetch('https://persnickety-defunctive-ceola.ngrok-free.dev/login', {
+                    const response = await fetch(`${API_BASE_URL}/login`, {
                         method: 'POST',
                         body: formData,
                         credentials: 'include'
@@ -1193,7 +1193,7 @@
                 }
 
                 try {
-                    const response = await fetch('https://persnickety-defunctive-ceola.ngrok-free.dev/register', {
+                    const response = await fetch(`${API_BASE_URL}/register`, {
                         method: 'POST',
                         body: formData,
                         credentials: 'include'
@@ -1274,7 +1274,7 @@
     async function logout() {
         const token = localStorage.getItem('auth_token');
         try {
-            await fetch('https://persnickety-defunctive-ceola.ngrok-free.dev/logout', {
+            await fetch(`${API_BASE_URL}/logout`, {
                 method: 'POST',
                 credentials: 'include',
                 headers: {
@@ -1331,7 +1331,7 @@
     // ============================================
     // 评论区交互 - 完整功能
     // ============================================
-    const API_BASE_URL = 'https://persnickety-defunctive-ceola.ngrok-free.dev';
+    const API_BASE_URL = 'https://yincongzhisen.onrender.com';
     let currentUser = null; // 当前登录用户信息
 
     // 页面加载时检查是否有保存的登录状态
