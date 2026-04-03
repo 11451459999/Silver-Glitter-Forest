@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, make_response
 from flask_cors import CORS
 from werkzeug.security import generate_password_hash, check_password_hash
 import pymysql as mysql
@@ -11,19 +11,24 @@ app.secret_key = 'your-secret-key-here'
 # 存储活跃的 token（生产环境应使用 Redis）
 active_tokens = {}
 
-# 启用 CORS 支持
+# 启用 CORS 支持 - 允许所有来源
 CORS(app, 
      supports_credentials=True,
-     origins=[
-         'http://localhost:5500',
-         'http://127.0.0.1:5500',
-         'http://localhost:3000',
-         'http://127.0.0.1:3000',
-         'null',
-         'http://localhost:8080',
-         'http://127.0.0.1:8080',
-         'https://11451459999.github.io',
-     ])
+     resources={
+         r"/*": {
+             "origins": "*",
+             "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+             "allow_headers": ["Content-Type", "Authorization"]
+         }
+     })
+
+# 添加手动 CORS 中间件，解决 ngrok 问题
+@app.after_request
+def after_request(response):
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
+    response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
+    return response
 
 def mysql_con():
     conn = mysql.connect(host='localhost', user='root', passwd='123456', database='user_db', autocommit=True)

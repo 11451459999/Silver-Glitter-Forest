@@ -1442,7 +1442,10 @@
             console.log('[DEBUG] 正在加载评论...');
             const response = await fetch(`${API_BASE_URL}/comments`, {
                 method: 'GET',
-                credentials: 'include'
+                credentials: 'include',
+                headers: {
+                    'ngrok-skip-browser-warning': 'true'
+                }
             });
             const result = await response.json();
             console.log('[DEBUG] 评论数据:', result);
