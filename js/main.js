@@ -1,4 +1,4 @@
-(function() {
+(function () {
     'use strict';
 
     // ============================================
@@ -17,7 +17,7 @@
     const videoModal = document.getElementById('videoModal');
     const modalClose = document.getElementById('modalClose');
     const trailerVideo = document.getElementById('trailerVideo');
-    
+
     // Lenis 实例
     let lenis = null;
 
@@ -36,7 +36,7 @@
         initAuthModal();
         initComments();
     }
-    
+
     // ============================================
     // Lenis 惯性滚动
     // ============================================
@@ -51,7 +51,7 @@
             touchMultiplier: 2,      // 触摸速度倍数
             infinite: false,
         });
-        
+
         // 动画循环
         function raf(time) {
             lenis.raf(time);
@@ -66,7 +66,7 @@
     function initLoading() {
         // 加载期间停止滚动
         if (lenis) lenis.stop();
-        
+
         // 需要预加载的所有图片列表
         const allImages = [
             '../assets/bg/forest_bg01.png',
@@ -78,7 +78,7 @@
             '../assets/screenshots/screenshot_4.jpg',
             '../assets/screenshots/screenshot_5.jpg',
             '../assets/screenshots/screenshot_6.jpg',
-            ...Array.from({length: 1749}, (_, i) => `../assets/frames/frame_${String(i).padStart(6, '0')}.jpg`)
+            ...Array.from({ length: 1749 }, (_, i) => `../assets/frames/frame_${String(i).padStart(6, '0')}.jpg`)
         ];
 
         let loadedCount = 0;
@@ -88,19 +88,19 @@
         // 预加载所有图片
         allImages.forEach((src) => {
             const img = new Image();
-            
+
             img.onload = () => {
                 loadedCount++;
                 updateProgress((loadedCount / totalImages) * 100);
                 checkComplete();
             };
-            
+
             img.onerror = () => {
                 loadedCount++;
                 updateProgress((loadedCount / totalImages) * 100);
                 checkComplete();
             };
-            
+
             img.src = src;
         });
 
@@ -139,7 +139,7 @@
         // 滚动时导航栏样式 - 使用 Lenis
         lenis.on('scroll', ({ scroll }) => {
             const scrollY = scroll;
-            
+
             if (topBar) {
                 if (scrollY > 50) {
                     topBar.classList.add('scrolled');
@@ -157,7 +157,7 @@
         navItems.forEach(item => {
             item.addEventListener('click', (e) => {
                 e.preventDefault();
-                
+
                 // 检查是否是角色分段跳转
                 const segmentIndex = item.dataset.segment;
                 if (segmentIndex) {
@@ -207,7 +207,7 @@
         sideNavItems.forEach(item => {
             const handleNavClick = (e) => {
                 const href = item.getAttribute('href');
-                
+
                 // 检查是否是角色分段跳转
                 const segmentIndex = item.dataset.segment;
                 if (segmentIndex) {
@@ -218,7 +218,7 @@
                     }, 100);
                     return;
                 }
-                
+
                 if (href && href.startsWith('#')) {
                     e.preventDefault();
                     const sectionId = href.substring(1);
@@ -229,7 +229,7 @@
                     }, 100);
                 }
             };
-            
+
             item.addEventListener('click', handleNavClick);
             item.addEventListener('touchend', handleNavClick);
         });
@@ -311,7 +311,7 @@
         if (!playBtn || !videoModal || !trailerVideo) return;
 
         playBtn.addEventListener('click', openVideoModal);
-        
+
         if (modalClose) {
             modalClose.addEventListener('click', closeVideoModal);
         }
@@ -391,7 +391,7 @@
     let homeOpacity = 1;
     let homeScale = 1;
     let homeTranslateY = 0;
-    
+
     function initParallax() {
         homeCanvas = document.getElementById('homeCanvas');
         const homeSection = document.getElementById('home');
@@ -400,9 +400,9 @@
         const scrollHint = document.querySelector('.scroll-hint');
 
         if (!homeCanvas) return;
-        
+
         homeCtx = homeCanvas.getContext('2d');
-        
+
         // 加载背景图
         homeBgImg = new Image();
         homeBgImg.src = '../assets/bg/forest_bg01.png';
@@ -410,16 +410,16 @@
             resizeHomeCanvas();
             drawHomeCanvas();
         };
-        
+
         // 设置Canvas尺寸 - 保持16:9比例
         function resizeHomeCanvas() {
             const containerWidth = window.innerWidth;
             const containerHeight = window.innerHeight;
             const targetRatio = 16 / 9;
             const containerRatio = containerWidth / containerHeight;
-            
+
             let canvasWidth, canvasHeight;
-            
+
             if (containerRatio > targetRatio) {
                 // 容器更宽，以高度为准
                 canvasHeight = containerHeight;
@@ -429,16 +429,16 @@
                 canvasWidth = containerWidth;
                 canvasHeight = canvasWidth / targetRatio;
             }
-            
+
             // 设置Canvas实际像素尺寸
             homeCanvas.width = canvasWidth;
             homeCanvas.height = canvasHeight;
-            
+
             // 通过CSS让Canvas居中显示
             homeCanvas.style.width = canvasWidth + 'px';
             homeCanvas.style.height = canvasHeight + 'px';
         }
-        
+
         resizeHomeCanvas();
         window.addEventListener('resize', () => {
             resizeHomeCanvas();
@@ -449,27 +449,27 @@
         lenis.on('scroll', ({ scroll }) => {
             const scrollY = scroll;
             const maxScroll = window.innerHeight;
-            
+
             // 只在首页区域应用视差
             if (scrollY < maxScroll) {
                 const progress = scrollY / maxScroll;
-                
+
                 // 逐帧淡出参数
                 homeScale = 1 + progress * 0.1;
                 homeTranslateY = progress * 50;
-                
+
                 // 淡出进度 - 滚动到80%时完全消失
                 const fadeProgress = Math.min(1, progress / 0.8);
                 homeOpacity = 1 - fadeProgress;
-                
+
                 // 绘制Canvas（只做缩放和位移）
                 drawHomeCanvas();
-                
+
                 // 统一通过home-section控制所有元素淡出
                 if (homeSection) {
                     homeSection.style.setProperty('opacity', homeOpacity, 'important');
                 }
-                
+
                 // home-content额外加位移动画
                 if (homeContent) {
                     homeContent.style.transform = `translateY(${scrollY * 0.3}px)`;
@@ -477,20 +477,20 @@
             }
         });
     }
-    
+
     // 绘制首页Canvas
     function drawHomeCanvas() {
         if (!homeCtx || !homeCanvas || !homeBgImg) return;
-        
+
         // 清空
         homeCtx.clearRect(0, 0, homeCanvas.width, homeCanvas.height);
-        
+
         // Canvas已经是16:9比例，计算图片如何铺满
         const imgRatio = homeBgImg.width / homeBgImg.height;
         const canvasRatio = homeCanvas.width / homeCanvas.height;
-        
+
         let drawWidth, drawHeight, drawX, drawY;
-        
+
         // 使用cover模式 - 图片完全覆盖Canvas
         if (imgRatio > canvasRatio) {
             // 图片更宽，以高度为准
@@ -501,14 +501,14 @@
             drawWidth = homeCanvas.width * 1.1;
             drawHeight = drawWidth / imgRatio;
         }
-        
+
         // 应用缩放和位移
         drawWidth *= homeScale;
         drawHeight *= homeScale;
-        
+
         drawX = (homeCanvas.width - drawWidth) / 2;
         drawY = (homeCanvas.height - drawHeight) / 2 + homeTranslateY;
-        
+
         // 绘制（带暗角效果）
         homeCtx.filter = 'brightness(0.5)';
         homeCtx.drawImage(homeBgImg, drawX, drawY, drawWidth, drawHeight);
@@ -524,12 +524,12 @@
     let charactersSection = null;
     let segmentIndicator = null;
     let currentCharacterInfo = null;
-    
+
     // 帧配置
     const TOTAL_FRAMES = 1750;
     const FRAME_PATH = '../assets/frames/frame_';
     const FRAME_STEP = 2; // 每2帧加载一个关键帧，更流畅
-    
+
     // 分段配置
     const SEGMENTS = [
         { name: '前段', startFrame: 0, endFrame: 291 },
@@ -540,7 +540,7 @@
         { name: '格林', startFrame: 1016, endFrame: 1158 },
         { name: '后段', startFrame: 1159, endFrame: 1749 }
     ];
-    
+
     // 角色数据
     const CHARACTER_DATA = {
         1: {
@@ -574,7 +574,7 @@
             desc: '「打败魔王，成为英雄」是格林自年幼以来的梦想。作为最年轻的格里芬情报对策科探员，一次任务中的「意外」改变了一切。'
         }
     };
-    
+
     // 状态变量
     let frameImages = {};
     let currentFrame = 0;
@@ -582,7 +582,7 @@
     let rafId = null;
     let lastDrawTime = 0;
     let currentSegmentIndex = 0;
-    
+
     // 初始化逐帧动画
     function initFrameAnimation() {
         frameCanvas = document.getElementById('frameCanvas');
@@ -590,23 +590,23 @@
         charactersSection = document.getElementById('characters');
         segmentIndicator = document.getElementById('segmentIndicator');
         currentCharacterInfo = document.getElementById('currentCharacterInfo');
-        
+
         if (!frameCanvas || !frameContainer || !charactersSection) {
             console.error('逐帧动画元素未找到');
             return;
         }
-        
+
         frameCtx = frameCanvas.getContext('2d');
-        
+
         // 设置Canvas尺寸 - 保持16:9比例
         function resizeCanvas() {
             const containerWidth = window.innerWidth;
             const containerHeight = window.innerHeight;
             const targetRatio = 16 / 9;
             const containerRatio = containerWidth / containerHeight;
-            
+
             let canvasWidth, canvasHeight;
-            
+
             if (containerRatio > targetRatio) {
                 // 容器更宽，以高度为准
                 canvasHeight = containerHeight;
@@ -616,29 +616,29 @@
                 canvasWidth = containerWidth;
                 canvasHeight = canvasWidth / targetRatio;
             }
-            
+
             // 设置Canvas实际像素尺寸
             frameCanvas.width = canvasWidth;
             frameCanvas.height = canvasHeight;
-            
+
             // 通过CSS让Canvas居中显示
             frameCanvas.style.width = canvasWidth + 'px';
             frameCanvas.style.height = canvasHeight + 'px';
         }
-        
+
         resizeCanvas();
         window.addEventListener('resize', resizeCanvas);
-        
+
         // 加载所有关键帧
         loadAllFrames();
-        
+
         // 使用 Lenis 监听滚动
         lenis.on('scroll', handleFrameScroll);
-        
+
         // 分段点击事件
         initSegmentClick();
     }
-    
+
     // 初始化分段点击
     function initSegmentClick() {
         const items = document.querySelectorAll('.segment-item');
@@ -649,52 +649,52 @@
             });
         });
     }
-    
+
     // 滚动到指定分段
     function scrollToSegment(segmentIndex) {
         const seg = SEGMENTS[segmentIndex];
         if (!seg || !charactersSection) return;
-        
+
         // 计算该分段的起始帧对应的滚动位置
         const rect = charactersSection.getBoundingClientRect();
         const totalScroll = rect.height - window.innerHeight;
-        
+
         // 计算该帧对应的进度
         let totalSpan = 0;
         SEGMENTS.forEach(s => {
             totalSpan += (s.endFrame - s.startFrame + 1);
         });
-        
+
         let accumulated = 0;
         for (let i = 0; i < segmentIndex; i++) {
             accumulated += (SEGMENTS[i].endFrame - SEGMENTS[i].startFrame + 1);
         }
         // 跳到分段中间
         accumulated += (seg.endFrame - seg.startFrame + 1) / 2;
-        
+
         const targetProgress = accumulated / totalSpan;
         const scrollPosition = charactersSection.offsetTop + targetProgress * totalScroll - window.innerHeight / 2;
-        
+
         // 使用 Lenis scrollTo，瞬间跳转
         lenis.scrollTo(scrollPosition, { immediate: true });
     }
-    
+
     // 加载所有关键帧
     function loadAllFrames() {
         let loadedCount = 0;
         const totalToLoad = Math.ceil(TOTAL_FRAMES / FRAME_STEP);
-        
+
         for (let i = 0; i < TOTAL_FRAMES; i += FRAME_STEP) {
             const img = new Image();
             const frameNum = String(i).padStart(6, '0');
             img.src = FRAME_PATH + frameNum + '.jpg';
-            
+
             const frameIndex = i;
-            
+
             img.onload = () => {
                 frameImages[frameIndex] = img;
                 loadedCount++;
-                
+
                 // 第一帧加载完成后立即显示
                 if (loadedCount === 1) {
                     drawFrame(0);
@@ -702,35 +702,35 @@
             };
         }
     }
-    
+
     // 处理滚动 - Lenis 滚动事件
     function handleFrameScroll({ scroll }) {
         if (!charactersSection || !frameContainer) return;
-        
+
         const rect = charactersSection.getBoundingClientRect();
         const viewportHeight = window.innerHeight;
-        
+
         // 检查是否在角色区域内
         const isInView = rect.top < viewportHeight && rect.bottom > 0;
-        
+
         if (isInView) {
             frameContainer.classList.add('active');
             if (segmentIndicator) {
                 segmentIndicator.classList.add('active');
             }
-            
+
             // 计算滚动进度 (0-1)
             const totalScroll = rect.height - viewportHeight;
             const scrolled = viewportHeight - rect.top;
             const progress = Math.max(0, Math.min(1, scrolled / totalScroll));
-            
+
             // 根据分段计算目标帧
             targetFrame = getFrameFromProgress(progress);
             targetFrame = Math.max(0, Math.min(TOTAL_FRAMES - 1, targetFrame));
-            
+
             // 更新当前分段索引
             updateCurrentSegment(targetFrame);
-            
+
             // 启动动画循环
             if (!rafId) {
                 animateLoop();
@@ -742,7 +742,7 @@
             }
         }
     }
-    
+
     // 根据进度计算帧数
     function getFrameFromProgress(progress) {
         // 计算总帧跨度
@@ -750,16 +750,16 @@
         SEGMENTS.forEach(seg => {
             totalSpan += (seg.endFrame - seg.startFrame + 1);
         });
-        
+
         // 计算目标帧位置
         const targetPosition = progress * totalSpan;
-        
+
         // 找到对应的分段和帧
         let accumulated = 0;
         for (let i = 0; i < SEGMENTS.length; i++) {
             const seg = SEGMENTS[i];
             const segSpan = seg.endFrame - seg.startFrame + 1;
-            
+
             if (accumulated + segSpan >= targetPosition) {
                 // 在这个分段内
                 const segProgress = (targetPosition - accumulated) / segSpan;
@@ -767,10 +767,10 @@
             }
             accumulated += segSpan;
         }
-        
+
         return TOTAL_FRAMES - 1;
     }
-    
+
     // 更新当前分段索引
     function updateCurrentSegment(frameIndex) {
         const prevIndex = currentSegmentIndex;
@@ -789,7 +789,7 @@
             updateNavSegmentActive(currentSegmentIndex);
         }
     }
-    
+
     // 更新导航栏中角色项的激活状态
     function updateNavSegmentActive(segmentIndex) {
         // 更新桌面导航
@@ -807,21 +807,21 @@
             }
         });
     }
-    
+
     // 动画循环
     function animateLoop() {
         const diff = targetFrame - currentFrame;
-        
+
         // 更快的帧切换 - 直接跳到目标帧附近
         if (Math.abs(diff) > 2) {
             currentFrame += diff * 0.5; // 提高到0.5，更快响应
         } else {
             currentFrame = targetFrame;
         }
-        
+
         // 绘制
         drawFrame(Math.round(currentFrame));
-        
+
         // 检查是否还在视图内
         if (frameContainer && frameContainer.classList.contains('active')) {
             rafId = requestAnimationFrame(animateLoop);
@@ -829,16 +829,16 @@
             rafId = null;
         }
     }
-    
+
     // 绘制帧
     function drawFrame(frameIndex) {
         if (!frameCtx || !frameCanvas) return;
-        
+
         // 找到最近的关键帧
         const keyFrame = Math.floor(frameIndex / FRAME_STEP) * FRAME_STEP;
-        
+
         let img = frameImages[keyFrame];
-        
+
         // 如果关键帧不存在，找最近的
         if (!img) {
             const keys = Object.keys(frameImages).map(Number).sort((a, b) => Math.abs(a - keyFrame) - Math.abs(b - keyFrame));
@@ -846,19 +846,19 @@
                 img = frameImages[keys[0]];
             }
         }
-        
+
         // 清空Canvas
         frameCtx.fillStyle = '#000000';
         frameCtx.fillRect(0, 0, frameCanvas.width, frameCanvas.height);
-        
+
         if (!img || !img.complete) return;
-        
+
         // 计算绘制尺寸 - 铺满整个Canvas（16:9）
         const canvasRatio = frameCanvas.width / frameCanvas.height;
         const imgRatio = img.width / img.height;
-        
+
         let drawWidth, drawHeight, drawX, drawY;
-        
+
         // 使用cover模式 - 图片完全覆盖Canvas
         if (imgRatio > canvasRatio) {
             // 图片更宽，以高度为准
@@ -873,38 +873,38 @@
             drawX = 0;
             drawY = (frameCanvas.height - drawHeight) / 2;
         }
-        
+
         frameCtx.drawImage(img, drawX, drawY, drawWidth, drawHeight);
-        
+
         // 绘制角色信息 - 逐帧飞入动画
         drawCharacterInfo(frameIndex);
     }
-    
+
     // 绘制角色信息 - 逐帧飞入
     function drawCharacterInfo(frameIndex) {
         const charData = CHARACTER_DATA[currentSegmentIndex];
         if (!charData) return; // 前段和后段不显示
-        
+
         const seg = SEGMENTS[currentSegmentIndex];
         const segTotal = seg.endFrame - seg.startFrame + 1;
         const segProgress = (frameIndex - seg.startFrame) / segTotal; // 0-1 分段内进度
-        
+
         // 飞入动画配置
         const flyInEnd = 0.15; // 前15%完成飞入
         const flyOutStart = 0.85; // 后15%开始飞出
-        
+
         let textX;
         let opacity = 1;
-        
+
         // 判断是左侧还是右侧
         const isRight = currentSegmentIndex === 2 || currentSegmentIndex === 4;
-        
+
         // 计算位置和透明度
         if (segProgress < flyInEnd) {
             // 飞入阶段
             const flyProgress = segProgress / flyInEnd; // 0-1
             const easeProgress = easeOutCubic(flyProgress);
-            
+
             if (isRight) {
                 // 从右往左飞
                 textX = frameCanvas.width + 200 - easeProgress * (frameCanvas.width + 200 - (frameCanvas.width - 450));
@@ -917,7 +917,7 @@
             // 飞出阶段
             const flyProgress = (segProgress - flyOutStart) / (1 - flyOutStart); // 0-1
             const easeProgress = easeInCubic(flyProgress);
-            
+
             if (isRight) {
                 // 往右飞出
                 textX = (frameCanvas.width - 450) + easeProgress * 500;
@@ -930,16 +930,16 @@
             // 静止阶段
             textX = isRight ? (frameCanvas.width - 450) : 60;
         }
-        
+
         // 绘制文字
         const baseY = frameCanvas.height - 250;
-        
+
         frameCtx.save();
         frameCtx.globalAlpha = opacity;
-        
+
         // 文字描边样式
         const strokeStyle = 'rgba(0, 0, 0, 0.8)';
-        
+
         // 英文名
         frameCtx.font = '600 14px "Noto Sans SC", sans-serif';
         frameCtx.fillStyle = '#D62032';
@@ -947,7 +947,7 @@
         frameCtx.lineWidth = 3;
         frameCtx.strokeText(charData.nameEn, textX, baseY);
         frameCtx.fillText(charData.nameEn, textX, baseY);
-        
+
         // 中文名
         frameCtx.font = '700 32px "Noto Sans SC", sans-serif';
         frameCtx.fillStyle = '#f0f0f0';
@@ -955,7 +955,7 @@
         frameCtx.lineWidth = 4;
         frameCtx.strokeText(charData.nameCn, textX, baseY + 35);
         frameCtx.fillText(charData.nameCn, textX, baseY + 35);
-        
+
         // 对话
         frameCtx.font = 'italic 15px "Noto Sans SC", sans-serif';
         frameCtx.fillStyle = '#e8e8e8';
@@ -963,7 +963,7 @@
         frameCtx.lineWidth = 3;
         const dialogX = textX + 3;
         const dialogY = baseY + 65;
-        
+
         // 绘制对话背景线
         frameCtx.strokeStyle = '#D62032';
         frameCtx.lineWidth = 3;
@@ -971,28 +971,28 @@
         frameCtx.moveTo(textX, dialogY - 15);
         frameCtx.lineTo(textX, dialogY + 40);
         frameCtx.stroke();
-        
+
         // 绘制对话文字（自动换行，带描边）
         wrapText(frameCtx, charData.dialog, dialogX, dialogY, 380, 22, strokeStyle);
-        
+
         // 描述
         frameCtx.font = '14px "Noto Sans SC", sans-serif';
         frameCtx.fillStyle = '#d0d0d0';
         wrapText(frameCtx, charData.desc, textX, dialogY + 60, 400, 22, strokeStyle);
-        
+
         frameCtx.restore();
     }
-    
+
     // 文字自动换行（支持描边）
     function wrapText(ctx, text, x, y, maxWidth, lineHeight, strokeStyle = null) {
         const chars = text.split('');
         let line = '';
         let currentY = y;
-        
+
         for (let i = 0; i < chars.length; i++) {
             const testLine = line + chars[i];
             const metrics = ctx.measureText(testLine);
-            
+
             if (metrics.width > maxWidth && line.length > 0) {
                 // 先绘制描边
                 if (strokeStyle) {
@@ -1015,12 +1015,12 @@
         }
         ctx.fillText(line, x, currentY);
     }
-    
+
     // 缓动函数
     function easeOutCubic(t) {
         return 1 - Math.pow(1 - t, 3);
     }
-    
+
     function easeInCubic(t) {
         return t * t * t;
     }
@@ -1137,9 +1137,9 @@
 
                 const formData = new FormData(loginForm);
                 const inputs = loginForm.querySelectorAll('.form-input');
-                
+
                 try {
-                    const response = await fetch('https://persnickety-defunctive-ceola.ngrok-free.dev/login', {
+                    const response = await fetch('http://localhost:8080/login', {
                         method: 'POST',
                         body: formData,
                         credentials: 'include'
@@ -1185,7 +1185,7 @@
                 }
 
                 try {
-                    const response = await fetch('https://persnickety-defunctive-ceola.ngrok-free.dev/register', {
+                    const response = await fetch('http://localhost:8080/register', {
                         method: 'POST',
                         body: formData,
                         credentials: 'include'
@@ -1235,7 +1235,7 @@
     function updateLoginUI(username) {
         // 存储当前用户信息（用于评论功能判断拥有者）
         currentUser = { username: username };
-        
+
         const loginBtn = document.getElementById('loginBtn');
         if (loginBtn) {
             loginBtn.innerHTML = `
@@ -1246,7 +1246,7 @@
                 ${username}
             `;
             loginBtn.classList.add('logged-in');
-            
+
             // 点击已登录用户显示退出选项
             loginBtn.onclick = () => {
                 if (confirm('确定要退出登录吗？')) {
@@ -1254,7 +1254,7 @@
                 }
             };
         }
-        
+
         // 登录后刷新评论列表以显示删除按钮
         if (typeof loadComments === 'function') {
             loadComments();
@@ -1264,17 +1264,17 @@
     // 退出登录
     async function logout() {
         try {
-            await fetch('https://persnickety-defunctive-ceola.ngrok-free.dev/logout', {
+            await fetch('http://localhost:8080/logout', {
                 method: 'POST',
                 credentials: 'include'
             });
         } catch (error) {
             console.error('退出登录失败:', error);
         }
-        
+
         // 清除当前用户信息
         currentUser = null;
-        
+
         // 重置UI
         const loginBtn = document.getElementById('loginBtn');
         if (loginBtn) {
@@ -1288,7 +1288,7 @@
             loginBtn.classList.remove('logged-in');
             loginBtn.onclick = null;
         }
-        
+
         // 退出后刷新评论列表以隐藏删除按钮
         if (typeof loadComments === 'function') {
             loadComments();
@@ -1316,7 +1316,7 @@
     // ============================================
     // 评论区交互 - 完整功能
     // ============================================
-    const API_BASE_URL = 'https://persnickety-defunctive-ceola.ngrok-free.dev';
+    const API_BASE_URL = 'http://localhost:8080';
     let currentUser = null; // 当前登录用户信息
 
     function initComments() {
@@ -1333,7 +1333,7 @@
             commentTextarea.addEventListener('input', () => {
                 const length = commentTextarea.value.length;
                 charCount.textContent = `${length}/500`;
-                
+
                 if (length > 500) {
                     charCount.style.color = 'var(--accent-red)';
                 } else {
@@ -1408,12 +1408,12 @@
 
             if (result.suc && result.comments) {
                 let comments = result.comments;
-                
+
                 // 排序处理
                 if (sortType === 'newest') {
                     comments.sort((a, b) => new Date(b.cat) - new Date(a.cat));
                 }
-                
+
                 renderComments(comments);
             }
         } catch (error) {
@@ -1438,7 +1438,7 @@
         commentsList.innerHTML = comments.map(comment => {
             const timeAgo = formatTimeAgo(comment.cat);
             const isOwner = currentUser && currentUser.username === comment.cname;
-            
+
             return `
                 <div class="comment-item" data-id="${comment.id}">
                     <div class="comment-avatar">
@@ -1524,7 +1524,7 @@
         const msgEl = document.createElement('div');
         msgEl.className = `comment-message ${type}`;
         msgEl.textContent = message;
-        
+
         const commentsSection = document.querySelector('.comments-section');
         if (commentsSection) {
             commentsSection.insertBefore(msgEl, commentsSection.firstChild);
@@ -1547,7 +1547,7 @@
         const date = new Date(dateStr);
         const now = new Date();
         const diff = now - date;
-        
+
         const minutes = Math.floor(diff / 60000);
         const hours = Math.floor(diff / 3600000);
         const days = Math.floor(diff / 86400000);
@@ -1556,7 +1556,7 @@
         if (minutes < 60) return `${minutes}分钟前`;
         if (hours < 24) return `${hours}小时前`;
         if (days < 30) return `${days}天前`;
-        
+
         return date.toLocaleDateString('zh-CN');
     }
 
@@ -1566,7 +1566,7 @@
         div.textContent = text;
         return div.innerHTML;
     }
-    
+
     // 页面加载后初始化
     window.addEventListener('load', () => {
         setTimeout(initFrameAnimation, 300);
